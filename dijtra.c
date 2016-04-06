@@ -3,14 +3,11 @@
 #define INFINITY 9999
 #define MAX 12
  
-void dijikstra(int G[MAX][MAX], int n, int startnode);
+void dijikstra(int G[MAX][MAX], int n, int startnode, int arrivee);
  
 int main(){
-	int n, u;
+	int u, v;
 	//~ clrscr();
-	printf("\nEnter the no. of vertices:: ");
-	scanf("%d", &n);
-	printf("\nEnter the adjacency matrix::\n");
 	 int G[MAX][MAX] = {
 	{0,2,0,0,13,0,0,0,0,0,7,10},
 	{0,0,0,0,0,0,1,0,0,0,0,0},
@@ -24,15 +21,17 @@ int main(){
 	{0,0,0,0,0,1,0,0,9,0,0,0},
 	{0,0,3,0,8,0,0,0,0,0,5,0},
 	{10,6,0,0,0,0,12,0,0,0,0,0},};
-	printf("\nEnter the starting node:: ");
+	printf("\nEntrer le sommet de depart ");
 	scanf("%d", &u);
-	dijikstra(G,n,u);
+	printf("\nEntrer le sommet d'arrivee: ");
+	scanf("%d", &v);
+	dijikstra(G,MAX,u,v);
 	//~ getch();
 	
 	return 0;
 }
  
-void dijikstra(int G[MAX][MAX], int n, int startnode)
+void dijikstra(int G[MAX][MAX], int n, int startnode, int arrivee)
 {
 	int cost[MAX][MAX], distance[MAX], pred[MAX];
 	int visited[MAX], count, mindistance, nextnode, i,j;
@@ -70,12 +69,12 @@ void dijikstra(int G[MAX][MAX], int n, int startnode)
 				}
 			count++;
 	}
- 
-	for(i=0;i < n;i++)
+	i = arrivee;
+	//for(i=0;i < n;i++)
 		if(i!=startnode)
 		{
-			printf("\nDistance of %d = %d", i, distance[i]);
-			printf("\nPath = %d", i);
+			printf("\nLa distance entre %d et %d est %d", startnode, arrivee, distance[i]);
+			printf("\nSon cout est = %d", i);
 			j=i;
 			do
 			{
@@ -84,4 +83,5 @@ void dijikstra(int G[MAX][MAX], int n, int startnode)
 			}
 			while(j!=startnode);
 		}
+		printf("\n");
 }
