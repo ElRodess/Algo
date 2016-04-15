@@ -1,13 +1,11 @@
 #include <stdio.h>
-//~ #include<conio.h>
 #define INFINITY 9999
 #define MAX 12
  
-void dijikstra(int G[MAX][MAX], int n, int startnode, int arrivee);
+void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee);
  
 int main(){
 	int u, v;
-	//~ clrscr();
 	 int G[MAX][MAX] = {
 	{0,2,0,0,13,0,0,0,0,0,7,10},
 	{0,0,0,0,0,0,1,0,0,0,0,0},
@@ -21,67 +19,76 @@ int main(){
 	{0,0,0,0,0,1,0,0,9,0,0,0},
 	{0,0,3,0,8,0,0,0,0,0,5,0},
 	{10,6,0,0,0,0,12,0,0,0,0,0},};
-	printf("\nEntrer le sommet de depart ");
+	printf("Entrer le sommet de depart: \n");
 	scanf("%d", &u);
-	printf("\nEntrer le sommet d'arrivee: ");
+	printf("Entrer le sommet d'arrivee: \n");
 	scanf("%d", &v);
-	dijikstra(G,MAX,u,v);
-	//~ getch();
+	dijkstra(G,MAX,u,v);
 	
 	return 0;
 }
  
-void dijikstra(int G[MAX][MAX], int n, int startnode, int arrivee)
+void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee)
 {
-	int cost[MAX][MAX], distance[MAX], pred[MAX];
-	int visited[MAX], count, mindistance, nextnode, i,j;
+	int cout[MAX][MAX], distance[MAX], pred[MAX];
+	int visite[MAX], compteur, mindistance, prochain, i,j;
+	/**
+	 * Initialisation de la matrice du cout avec la valeur 0 remplacee par INFINITY
+	 **/ 
 	for(i=0;i < n;i++)
 		for(j=0;j < n;j++)
 			if(G[i][j]==0)
-				cost[i][j]=INFINITY;
+				cout[i][j]=INFINITY;
 			else
-				cost[i][j]=G[i][j];
-	
+				cout[i][j]=G[i][j];
+	/**
+	 * Initialisation de tableau des distances
+	 * */
 	for(i=0;i< n;i++)
 	{
-		distance[i]=cost[startnode][i];
-		pred[i]=startnode;
-		visited[i]=0;
+		distance[i]=cout[depart][i];
+		pred[i]=depart;
+		visite[i]=0;
 	}
-	distance[startnode]=0;
-	visited[startnode]=1;
-	count=1;
-	while(count < n-1){
+	distance[depart]=0;
+	visite[depart]=1;
+	compteur=1;
+	/**
+	 * Algo de dijtra
+	 * */
+	while(compteur < n-1){
 		mindistance=INFINITY;
 		for(i=0;i < n;i++)
-			if(distance[i] < mindistance&&!visited[i])
+			if(distance[i] < mindistance&&!visite[i])
 			{
 				mindistance=distance[i];
-				nextnode=i;
+				prochain=i;
 			}
-		visited[nextnode]=1;
+		visite[prochain]=1;
 		for(i=0;i < n;i++)
-			if(!visited[i])
-				if(mindistance+cost[nextnode][i] < distance[i])
+			if(!visite[i])
+				if(mindistance+cout[prochain][i] < distance[i])
 				{
-					distance[i]=mindistance+cost[nextnode][i];
-					pred[i]=nextnode;
+					distance[i]=mindistance+cout[prochain][i];
+					pred[i]=prochain;
 				}
-			count++;
+			compteur++;
 	}
 	i = arrivee;
-	//for(i=0;i < n;i++)
-		if(i!=startnode)
+	/**
+	 * Affichage de la distance et du chemin 
+	 **/
+		if(i!=depart)
 		{
-			printf("\nLa distance entre %d et %d est %d", startnode, arrivee, distance[i]);
-			printf("\nSon cout est = %d", i);
+			printf("\nLa distance entre %d et %d est %d", depart, arrivee, distance[i]);
+			printf("\nLe trajet est = %d", i);
 			j=i;
 			do
 			{
 				j=pred[j];
-				printf(" <-%d", j);
+				printf(" <- %d", j);
 			}
-			while(j!=startnode);
+			while(j!=depart);
 		}
 		printf("\n");
 }
