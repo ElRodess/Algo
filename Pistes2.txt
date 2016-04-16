@@ -1,11 +1,11 @@
 Villette-montfrais  11.85
-Vaujany-villette  11.85
+Vaujany-Villette  11.85
 vaujaniate  4.74
 Vallonet  5.33
-Ski-Monfrais  3.56
+Ski-Montfrais  3.56
 Siege-Montfrais  8.89
 Edelweiss  2.37
-Vaujany-alpette  35.56
+Vaujany-Alpette  35.56
 Chalets  2.96
 Alpette-Rousse  23.7
 Cabine-Alpette  16.59
@@ -24,7 +24,7 @@ Ski-Alpette  2.37
 Piste-Alpette  8.67
 Les-Rousses  6.67
 Bartavelles2  8
-Batavelles1  8.67
+Bartavelles1  8.67
 Grotte-De-Glaces  1.33
 Chamois  7.33
 Tunnel  21.33
