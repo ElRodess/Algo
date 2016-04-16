@@ -41,7 +41,7 @@ Siege-Glacier 4.44
 Hermine	3.56
 MarmotteIII 11.85
 Piste-Clocher-De-Macle 4.74
-MarmottesII 8.89
+marmottesII 8.89
 Combe-Charboniere 11.85
 Deversoir 2.67
 Piste-Lievre-Blanc 2.67
