@@ -1,43 +1,55 @@
 #include <stdio.h>
-#define INFINITY 9999
-#define MAX 12
+#define INFINITY 9999.00
  
-void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee);
- 
+void dijkstra(float G[47][47], int n, int depart, int arrivee);
+
 int main(){
 	int u, v;
-	 int G[MAX][MAX] = {
-	{0,2,0,0,13,0,0,0,0,0,7,10},
-	{0,0,0,0,0,0,1,0,0,0,0,0},
-	{0,0,0,1,0,0,1,0,0,2,0,0},
-	{0,0,0,0,0,8,0,4,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,5,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,5,0,0,0,2,0,0,0,3},
-	{0,0,0,0,0,10,0,0,4,7,0,0},
-	{0,0,0,0,0,5,0,0,0,0,0,0},
-	{0,0,0,0,0,1,0,0,9,0,0,0},
-	{0,0,3,0,8,0,0,0,0,0,5,0},
-	{10,6,0,0,0,0,12,0,0,0,0,0},};
+	int choix = 0;
+	int boolean = -1;
+	FILE *fichier;
+	while (boolean != 0)
+	{
+		printf("Si vous etes un skieur debutant, appuyer sur 1, sinon sur 2\n");
+		scanf("%d",&choix);
+		if (choix == 1  || choix == 2) boolean = 0;
+		else boolean = 1;
+	}
+	if (choix == 1) fichier  = fopen("matrice_cout1","r");
+	else fichier = fopen("matrice_cout2","r");
+	
+	float G[47][47];
+	int i,j;
+	i = 0;
+	
+	for (i = 0; i < 47; i ++)
+	{
+		for (j = 0; j < 47; j ++)
+		{
+				fscanf(fichier, "%f",&(G[i][j]));
+		}
+	}
+	fclose(fichier);
 	printf("Entrer le sommet de depart: \n");
 	scanf("%d", &u);
 	printf("Entrer le sommet d'arrivee: \n");
 	scanf("%d", &v);
-	dijkstra(G,MAX,u,v);
+	dijkstra(G,47,u,v);
 	
 	return 0;
 }
  
-void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee)
+void dijkstra(float G[47][47], int n, int depart, int arrivee)
 {
-	int cout[MAX][MAX], distance[MAX], pred[MAX];
-	int visite[MAX], compteur, mindistance, prochain, i,j;
+	float cout[47][47], distance[47], pred[47];
+	float visite[47], compteur, mindistance ; 
+	int i,j,prochain;
 	/**
 	 * Initialisation de la matrice du cout avec la valeur 0 remplacee par INFINITY
 	 **/ 
 	for(i=0;i < n;i++)
 		for(j=0;j < n;j++)
-			if(G[i][j]==0)
+			if(G[i][j]==0.0)
 				cout[i][j]=INFINITY;
 			else
 				cout[i][j]=G[i][j];
@@ -48,7 +60,7 @@ void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee)
 	{
 		distance[i]=cout[depart][i];
 		pred[i]=depart;
-		visite[i]=0;
+		visite[i]=0.0;
 	}
 	distance[depart]=0;
 	visite[depart]=1;
@@ -80,7 +92,7 @@ void dijkstra(int G[MAX][MAX], int n, int depart, int arrivee)
 	 **/
 		if(i!=depart)
 		{
-			printf("\nLa distance entre %d et %d est %d", depart, arrivee, distance[i]);
+			printf("\nLa distance entre %d et %d est %f", depart, arrivee, distance[i]);
 			printf("\nLe trajet est = %d", i);
 			j=i;
 			do
