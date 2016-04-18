@@ -1,8 +1,0 @@
-test 
-rouge 
-depart 
-arrivee
-coucou 
-bleu 
-paris 
-versailles
