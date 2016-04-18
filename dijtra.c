@@ -8,6 +8,7 @@ int main(){
 	int choix = 0;
 	int boolean = -1;
 	FILE *fichier;
+	
 	while (boolean != 0)
 	{
 		printf("Si vous etes un skieur debutant, appuyer sur 1, sinon sur 2\n");
@@ -15,6 +16,7 @@ int main(){
 		if (choix == 1  || choix == 2) boolean = 0;
 		else boolean = 1;
 	}
+	
 	if (choix == 1) fichier  = fopen("matrice_cout1","r");
 	else fichier = fopen("matrice_cout2","r");
 	
