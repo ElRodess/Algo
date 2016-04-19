@@ -1,0 +1,63 @@
+\documentclass [a4] {article}
+
+\usepackage [utf8] {inputenc}
+\usepackage [french] {babel}
+\usepackage {amsfonts, amsmath, amssymb,amsthm,array,multirow,makecell}
+\usepackage{hyperref}
+\setcellgapes{1pt}
+\makegapedcells
+\usepackage[table]{xcolor}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+
+\author {D'Amonville Ronan Desquaires Joseph}
+\title {Rapport de projet d'Algorithme}
+
+
+\begin {document}
+\maketitle
+
+%Rappel du sujet%
+\textsf Le projet a pour but de programmer un algorithme permettant aux skieurs de se diriger dans la station de ski de l'Alpe d'Huez.\\
+
+%Langage Choisi%
+\newpage
+\section {Langage choisi}
+
+\paragraph { Nous avons choisi le langage C car c'est le seul que nous maîtrisons pour l'instant, on aurait put s'orienter vers le langage Java avec plus d'expérience.} 
+
+\section{Structure de données}
+
+\paragraph {On a représenté le graphe sous la forme d'une matrice de la forme suivante :}
+\begin{tabular}{|c|c|c|}
+\hline  \cellcolor{black} & Sommet1 & Sommet2 \\
+\hline Sommet1 & null & arête \\
+\hline Sommet2 & null & null \\
+\hline 
+\end{tabular}
+\paragraph{On remarque donc que si un Sommet peut allez vers un autre, on note le nom de la piste qu'il doit emprunter, sinon on marque null.}
+\paragraph{Du coup a dût créer une structure piste qui est représenté ainsi :}
+\begin{tabular}{|c|c|}
+\hline  Une chaine de caractère & Son nom \\
+\hline Un float & Le temps qu'il faut pour la parcourir (son poids) \\
+\hline
+\end{tabular}
+\paragraph{Cela nous a permis de préciser le temps mais aussi quelles pistes emprunter pour allez à sa destination}
+\section{principales étapes}
+\paragraph{La première étape était de choisir quelle type de structure de données nous allions utiliser.Celle ci est décrite ci-dessus.}
+\paragraph{La deuxième étape fût la plus longue : elle consistait à répertorier les différents sommets ainsi que les pistes dans la matrice, après quoi il fallait créer une base de donnée de pistes.}
+\paragraph{La troisième étape a été de convertir ces 2 bases de données dans des fichiers textes, pour cela on a utiliser un programme fait maison afin de transformer notre matrice de nom de pistes en matrice de float. dans un fichier texte.}
+\paragraph{Enfin il a fallut l'algorithme de Dijtra en C ainsi que l'adapter à notre structure de données}                                                                                                                                                                                                                                                                                                                                                                                                                                              
+\newpage
+\section{Fonctionnement de l'algorithme}
+\paragraph{L'algorithme est expliqué en détails dans les commentaires du code, sinon il s'agit juste de l'algorithme de dijtra.}
+\section{Difficultés rencontrées }
+\paragraph{Les principales difficultées ont été la traduction du plan en structure de données ainsi que l'implémentation de Dijtra avec une matrice.}
+
+\section{annexe}
+\paragraph{Vous pouvez retrouver le dossier de notre projet sur https://github.com/ElRodess/Algo}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+
+\end {document}
+
+
