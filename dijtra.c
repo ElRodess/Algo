@@ -127,13 +127,13 @@ void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][
 		if(i!=depart)
 		{
 			printf("\nLa distance entre %s et %s est %f min", sommets[depart], sommets[arrivee], distance[i]);
-			printf("\nLe trajet est = %s", sommets[i]);
+			printf("\nLe trajet est: \n");
 			j=i;
 			do
 			{
 				k = j;
 				j = pred[j];		
-				printf(" <- %s <- %s",pistes[j][k], sommets[j]);
+				printf("%s par %s en provenance de %s\n",sommets[k], pistes[j][k], sommets[j]);
 			}
 			while(j!=depart);
 		}
