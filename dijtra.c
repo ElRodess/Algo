@@ -1,11 +1,21 @@
 #include <stdio.h>
 #include <string.h> 
 #define INFINITY 9999.00
- 
-void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][50]);
+
+/**
+ * Prototypes de fonction
+ * */
+void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][50],char pistes[47][47][50]);
 void rentre_sommets (char sommets[47][50]);
 void affiche_sommets();
 int choix_sommets(char sommets[47][50]);
+void rentre_pistes(char pistes[47][47][50]);
+
+typedef struct
+{
+	char nom;
+	int types;
+}Pistes;
 
 int main(){
 	int depart, arrivee;
@@ -13,6 +23,10 @@ int main(){
 	int boolean = -1;
 	FILE *fichier;
 	char sommets[47][50];
+	char pistes[47][47][50];
+	
+	rentre_sommets(sommets);
+	rentre_pistes(pistes);
 	
 	while (boolean != 0)
 	{
@@ -25,7 +39,7 @@ int main(){
 	if (choix == 1) fichier  = fopen("matrice_cout1","r");
 	else fichier = fopen("matrice_cout2","r");
 	
-	rentre_sommets(sommets);
+	
 	
 	float G[47][47];
 	int i,j;
@@ -54,16 +68,16 @@ int main(){
 		printf("Le sommet rentre comme arrive est incorect\n");
 		return -1;
 	}
-	dijkstra(G,47,depart,arrivee,sommets);
+	dijkstra(G,47,depart,arrivee,sommets,pistes);
 	
 	return 0;
 }
  
-void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][50])
+void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][50], char pistes[47][47][50])
 {
 	float cout[47][47], distance[47], pred[47];
 	float visite[47], compteur, mindistance ; 
-	int i,j,prochain;
+	int i,j,k,prochain;
 	/**
 	 * Initialisation de la matrice du cout avec la valeur 0 remplacee par INFINITY
 	 **/ 
@@ -112,13 +126,14 @@ void dijkstra(float G[47][47], int n, int depart, int arrivee, char sommets[47][
 	 **/
 		if(i!=depart)
 		{
-			printf("\nLa distance entre %s et %s est %f", sommets[depart], sommets[arrivee], distance[i]);
+			printf("\nLa distance entre %s et %s est %f min", sommets[depart], sommets[arrivee], distance[i]);
 			printf("\nLe trajet est = %s", sommets[i]);
 			j=i;
 			do
 			{
-				j=pred[j];
-				printf(" <- %s", sommets[j]);
+				k = j;
+				j = pred[j];		
+				printf(" <- %s <- %s",pistes[j][k], sommets[j]);
 			}
 			while(j!=depart);
 		}
@@ -182,4 +197,19 @@ int choix_sommets(char sommets[47][50])
 	else if (strcmp(chaine,sommets[43]) == 0) return 43;
 	else if (strcmp(chaine,sommets[44]) == 0) return 44;
 	else return -1;
+}
+
+void rentre_pistes(char pistes[47][47][50])
+{
+	FILE *fichier = fopen("Matrice.txt","r");
+	int i,j;
+	for (i = 0; i < 47; i ++)
+	{
+		for (j = 0; j < 47; j ++)
+		{
+			fscanf(fichier, "%s", pistes[i][j]);
+		}
+	}
+	
+	fclose(fichier);
 }
