@@ -1,0 +1,341 @@
+\documentclass[a4paper,11pt,fleqn]{article}
+
+\usepackage [utf8] {inputenc}
+\usepackage [french] {babel}
+\usepackage[table]{xcolor}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+\usepackage[a4paper]{geometry}
+\geometry{top=2 cm, bottom=3 cm, left=3 cm , right=3 cm}
+\usepackage{listings}
+
+\author {D'Amonville Ronan Desquaires Joseph}
+\title {Rapport du projet: "Tout schuss"}
+\date{2 mai 2016}
+
+
+\begin {document}
+\maketitle
+
+\hspace{5cm}
+\section{Rappel du sujet}
+
+\paragraph{Ce projet a pour but de permettre a un skieur , peut importe son niveau, de trouver un chemin optimal entre deux sommets de la station de ski Alpe d'Huez}
+
+\section{Travail effectué}
+
+\paragraph{La première étape était de choisir quelle type de structure de données nous allions utiliser afin de permettre une utilisation simple de cette structure de cette structure en langage C.}
+
+\paragraph{La deuxième étape a consisté à répertorier tous les sommets ainsi que que les arêtes reliant ces différents sommets, c'est a dire les pistes de ski et les remontés, pour pouvoir construire notre structure de donnée.}
+
+\paragraph{La troisième étape a été de convertir ces 2 bases de données dans des fichiers textes, pour pouvoir les utiliser ultérieurement dans le programme. Une fois en fichier texte, nous avons pu faire la conversion de la matrice de nom des sommets et pistes, en une matrice de cout contenant 0 si il n'existait aucune arête entre les deux sommets concernés ou bien le temps nécessaire pour aller d'un sommet a un autre.}
+
+\paragraph{Enfin, il a fallut écrire l'algorithme de Dijkstra en langage C, afin de pouvoir calculer la plus petite distance entre deux sommets données en entrée}                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
+\section{Langage choisi}
+
+\paragraph{ Nous avons choisi le langage C car c'est le seul que nous maîtrisons pour l'instant, nous aurions pu choisir le langage orientée objet java, mais nous n'avons pas les connaissances nécessaires qui nous aurait permis de réaliser ce projet.} 
+
+\newpage
+\hspace{5cm}
+\section{Structure de données}
+
+\paragraph{On a représenté le graphe sous la forme d'une matrice de la forme suivante :
+\newline
+\newline
+}
+\begin{tabular}{|c|c|c|}
+\hline  \cellcolor{black} & Sommet1 & Sommet2 \\
+\hline Sommet1 & null & arête \\
+\hline Sommet2 & null & null \\
+\hline 
+\end{tabular}
+\paragraph{On remarque donc que si un Sommet peut allez vers un autre, on note le nom de l'arête reliant les deux sommets, c'est a dire la piste de ski, "null" est indiqué dans le tableau}
+\paragraph{Par la suite, nous avons utilisé une structure de donnée comparable au tableau ci dessous qui nous a permis par la suite de créer la matrice d'adjacence du graphe de la station de ski, sur lequel nous avons appliqué l'algorithme de dijkstra.
+\newline
+\newline}
+\begin{tabular}{|c|c|}
+\hline  Une chaine de caractère & Un float \\
+\hline Le nom de la Piste & Le temps qu'il faut pour la parcourir (son poids) \\
+\hline
+\end{tabular}
+\paragraph{Grace a ce tableau et des noms de pistes visible ci dessus, nous avons pu construire la matrice de cout du graphe, nécessaire a notre algorithme}
+
+\section{Fonctionnement de l'algorithme}
+
+\paragraph{Tout d'abord, l'algorithme demande a l'utilisateur quel est son niveau de ski: moyen ou expérimente, la matrice que l'algorithme lira dependra de la réponse donnée par l'utilisateur. Le temps affiché a la fin change en fonction du niveau de skieur}
+
+\paragraph{Ensuite, l'utilisateur va donné le point de départ de son parcours ainsi que son point d'arrivée parmi tous les sommets proposés. Si le sommet diffère par rapport a ceux proposé, l'algorithme s'arrête.}
+
+\paragraph{Enfin, l'algorithme de Dijkstra est appliqué sur la matrice de cout du graphe avec en point de départ et d'arrivée les sommets que l'utilisateur a rentré. Le parcours ainsi que sa durée sera affiché après l'exécution de cet algorithme.}
+
+\section{Difficultés rencontrées }
+
+\paragraph{Les principales difficultés rencontrées lors de la réalisation de ce projet ont été la construction de la matrice des sommets et des pistes les reliant, ainsi que l'algorithme de Dijkstra en langage C}
+
+\paragraph{Également, le type des arêtes a été une grande difficulté du projet été après plusieurs essais, nous n'avons pas réussi a avoir quelque chose de concluant, c'est pour cela que le type d'arête n'est pas affiché en même temps que le parcours.}
+
+\newpage
+\section{Annexe}
+
+\begin{lstlisting}
+#include <stdio.h>
+#include <string.h> 
+#define INFINITY 9999.00
+
+/**
+ * Prototypes de fonction
+ * */
+void dijkstra(float G[47][47], int n, int depart, 
+int arrivee, char sommets[47][50],char pistes[47][47][50]);
+void rentre_sommets (char sommets[47][50]);
+void affiche_sommets();
+int choix_sommets(char sommets[47][50]);
+void rentre_pistes(char pistes[47][47][50]);
+
+int main(){
+	int depart, arrivee;
+	char choix[50];
+	int boolean = -1;
+	FILE *fichier;
+	char sommets[47][50];
+	char pistes[47][47][50];
+	char *moyen = "Moyen";
+	char *experimente = "Experimente";
+	
+	rentre_sommets(sommets);
+	rentre_pistes(pistes);
+	
+	/**
+	 * Selection du niveau de ski de l'utilisateur
+	 * Niveau moyen ou bien experimente
+	 * */
+	 
+	while (boolean != 0)
+	{
+		printf("Entrer votre niveau de ski: Moyen ou Experimente\n");
+		scanf("%s",choix);
+		if (strcmp(choix,moyen) == 0 || 
+		strcmp(choix,experimente) == 0) boolean = 0;
+		else boolean = 1;
+	}
+	
+	if (strcmp(choix,"Moyen") == 0) fichier  = fopen("matrice_cout1","r");
+	else fichier = fopen("matrice_cout2","r");
+	
+	/**
+	 * Lecture de la matrice de cout du graphe
+	 * */
+	 
+	float G[47][47];
+	int i,j;
+	i = 0;
+	
+	for (i = 0; i < 47; i ++)
+	{
+		for (j = 0; j < 47; j ++)
+		{
+				fscanf(fichier, "%f",&(G[i][j]));
+		}
+	}
+	fclose(fichier);
+	
+	affiche_sommets();
+	
+	/**
+	 * Choix du point de depart et d'arrivee du parcours d'utilisateur
+	 * */
+	printf("Entrer le sommet de depart: \n");
+	depart = choix_sommets(sommets);
+	if (depart == -1)
+	{
+		printf("Le sommet rentre comme depart est incorrect\n");
+		return -1;
+	}
+	printf("Entrer le sommet d'arrivee: \n");
+	arrivee = choix_sommets(sommets);
+	if (arrivee == -1)
+	{
+		printf("Le sommet rentre comme arrive est incorect\n");
+		return -1;
+	}
+	
+	dijkstra(G,47,depart,arrivee,sommets,pistes);
+	
+	return 0;
+}
+ 
+void dijkstra(float G[47][47], int n, int depart, int arrivee, 
+char sommets[47][50], char pistes[47][47][50])
+{
+	float cout[47][47], distance[47], pred[47];
+	float visite[47], compteur, mindistance ; 
+	int i,j,k,prochain;
+	/**
+	 * Initialisation de la matrice du cout avec la valeur 0 
+	 remplacee par INFINITY
+	 **/ 
+	for(i=0;i < n;i++)
+		for(j=0;j < n;j++)
+			if(G[i][j]==0.0)
+				cout[i][j]=INFINITY;
+			else
+				cout[i][j]=G[i][j];
+	/**
+	 * Initialisation de tableau des distances
+	 * */
+	for(i=0;i< n;i++)
+	{
+		distance[i]=cout[depart][i];
+		pred[i]=depart;
+		visite[i]=0.0;
+	}
+	distance[depart]=0;
+	visite[depart]=1;
+	compteur=1;
+	/**
+	 * Algo de dijtra
+	 * */
+	while(compteur < n-1){
+		mindistance=INFINITY;
+		for(i=0;i < n;i++)
+			if(distance[i] < mindistance&&!visite[i])
+			{
+				mindistance=distance[i];
+				prochain=i;
+			}
+		visite[prochain]=1;
+		for(i=0;i < n;i++)
+			if(!visite[i])
+				if(mindistance+cout[prochain][i] < 
+				distance[i])
+				{
+					distance[i]=mindistance +
+					cout[prochain][i];
+					pred[i]=prochain;
+				}
+			compteur++;
+	}
+	i = arrivee;
+	/**
+	 * Affichage de la distance et du chemin 
+	 **/
+		if(i!=depart)
+		{
+			printf("\nLa distance entre %s et %s est %f min", 
+			sommets[depart], sommets[arrivee], distance[i]);
+			printf("\nLe trajet est: \n");
+			j=i;
+			do
+			{
+				k = j;
+				j = pred[j];		
+				printf("%s par %s en provenance de %s\n",
+				sommets[k], pistes[j][k], sommets[j]);
+			}
+			while(j!=depart);
+		}
+		printf("\n");
+}
+
+void rentre_sommets(char sommets[47][50])
+{
+	/**
+	 * Rentre la liste des sommets dans un tableau
+	 * Afin de pouvoir les comparer aux sommets donnees en entrees
+	 * */
+	 
+	FILE *fichier = fopen("Sommets.txt","r");
+	int i;
+	for (i = 0; i < 47; i ++)
+	{
+		fscanf(fichier, "%s", sommets[i]);
+	}
+	
+	fclose(fichier);
+}
+
+void affiche_sommets()
+{
+	/**
+	 * Affiche tous les sommets ou l'on peut partir et arrivee
+	 * */
+	 
+	printf("Vous pouvez partir des sommets suivants:\n");
+	printf("La-Villette\n");
+	printf("MontFrais\n");
+	printf("Vaujany\n");
+	printf("Alpette\n");
+	printf("Dome-Des-Petites-Rousses\n");
+	printf("Pic-Blanc\n");
+	printf("Glacier-De-Sarenne\n");
+	printf("Clocher-De-Macle\n");
+	printf("Plat-Des-Marmottes\n");
+	printf("Alpe-D-Huez\n");
+	printf("Oz-En-Oisans\n");
+	printf("Signal\n");
+	printf("Villard-Reculas\n");
+	printf("Huez\n");
+	printf("Signal-De-L-Homme\n");
+	printf("Auris-En-Oisans\n");
+	printf("Le-Chatelard\n");
+	printf("Enversin\n");
+}
+
+int choix_sommets(char sommets[47][50])
+{
+	/**
+	 * Renvoie le numero du sommet que l'utilisateur 
+	 * par rapport au nom de sommet 
+	 * que l'utilisateur donne au debut du programme
+	 * */
+	 
+	char chaine[50];
+	scanf("%s",chaine);
+	if (strcmp(chaine,sommets[0]) == 0) return 0;
+	else if (strcmp(chaine,sommets[1]) == 0) return 1;
+	else if (strcmp(chaine,sommets[3])== 0) return 3;
+	else if (strcmp(chaine,sommets[4]) == 0) return 4;
+	else if (strcmp(chaine,sommets[8]) == 0) return 8;
+	else if (strcmp(chaine,sommets[13]) == 0) return 13;
+	else if (strcmp(chaine,sommets[14]) == 0) return 14;
+	else if (strcmp(chaine,sommets[17]) == 0) return 17;
+	else if (strcmp(chaine,sommets[19]) == 0) return 19;
+	else if (strcmp(chaine,sommets[20]) == 0) return 20;
+	else if (strcmp(chaine,sommets[23]) == 0) return 23;
+	else if (strcmp(chaine,sommets[28]) == 0) return 28;
+	else if (strcmp(chaine,sommets[29]) == 0) return 29;
+	else if (strcmp(chaine,sommets[36]) == 0) return 36;
+	else if (strcmp(chaine,sommets[38]) == 0) return 38;
+	else if (strcmp(chaine,sommets[43]) == 0) return 43;
+	else if (strcmp(chaine,sommets[44]) == 0) return 44;
+	else return -1;
+}
+
+void rentre_pistes(char pistes[47][47][50])
+{
+	/**
+	 * Rentre la matrice avec le nom des sommets 
+	 * et les pistes les reliant 
+	 * */
+	 
+	FILE *fichier = fopen("Matrice.txt","r");
+	int i,j;
+	for (i = 0; i < 47; i ++)
+	{
+		for (j = 0; j < 47; j ++)
+		{
+			fscanf(fichier, "%s", pistes[i][j]);
+		}
+	}
+	
+	fclose(fichier);
+}
+\end{lstlisting}
+
+\paragraph{Vous pouvez retrouver le dossier de notre projet sur https://github.com/ElRodess/Algo avec tous les documents textes ou sont remplis les matrices, les pistes ainsi que leur couts.
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+\paragraph{Vous avez si dessus le code source de notre programme}
+
+\end {document}
